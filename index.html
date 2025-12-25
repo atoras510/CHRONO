@@ -225,8 +225,8 @@
 
     <nav class="fixed top-0 w-full z-50 glass border-b border-black/[0.03]">
         <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center text-black">
-            <div class="flex items-center space-x-8">
-                <div class="text-2xl font-black tracking-tighter cursor-pointer" onclick="showListView()">CHRONO-NEXUS</div>
+            <div class="flex items-center space-x-8 text-black">
+                <div class="text-2xl font-black tracking-tighter cursor-pointer text-black" onclick="showListView()">CHRONO-NEXUS</div>
                 <div class="hidden md:flex space-x-6 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
                     <a href="#" class="hover:text-black transition" onclick="showListView()">マーケット</a>
                     <a href="#" class="hover:text-black transition" onclick="toggleMainTab('history')">売買履歴</a>
@@ -239,11 +239,12 @@
     </nav>
 
     <!-- 1. メイン画面 -->
-    <main id="list-view" class="view-transition pt-32 pb-24 text-black">
+    <main id="list-view" class="view-transition pt-32 pb-24 text-black text-black">
         <div class="max-w-[1600px] mx-auto px-6">
             <div id="main-header" class="mb-12">
                 <h1 id="main-title" class="text-5xl font-black tracking-tighter uppercase italic text-black leading-tight">Market Dashboard</h1>
                 <p id="main-subtitle" class="text-[10px] text-neutral-400 font-bold uppercase tracking-[0.3em] mt-2 italic">Authorized Global Watch Registry</p>
+                
                 <div class="flex items-center space-x-2 mt-8 border-b border-black/5 pb-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
                     <button onclick="toggleMainTab('collection')" id="tab-collection" class="tab-btn active font-black italic">Collection</button>
                     <button onclick="toggleMainTab('watchlist')" id="tab-watchlist" class="tab-btn font-black italic">Watchlist</button>
@@ -254,118 +255,140 @@
 
             <!-- コレクション/ウォッチリスト用 -->
             <div id="collection-container" class="glass rounded-[32px] overflow-hidden border border-black/[0.03] mb-24 bg-white/30 text-black">
-                <table id="collection-table" class="w-full text-left border-collapse">
+                <table id="collection-table" class="w-full text-left border-collapse text-black">
                     <thead>
                         <tr class="text-[9px] text-neutral-400 uppercase tracking-[0.2em] font-black border-b border-black/[0.03] bg-black/[0.01]">
                             <th class="pl-8 py-5 w-12 text-center italic opacity-60">☆</th>
                             <th class="px-4 py-5 w-16 text-center italic opacity-60">ID</th>
-                            <th class="px-4 py-5">Collection Series</th>
-                            <th class="px-4 py-5">最安値</th>
-                            <th class="px-4 py-5 text-right pr-8">パフォーマンス</th>
+                            <th class="px-4 py-5 text-black">Collection Series</th>
+                            <th class="px-4 py-5 text-black">最安値</th>
+                            <th class="px-4 py-5 text-right pr-8 text-black">パフォーマンス</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic" id="collection-body"></tbody>
+                    <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic text-black" id="collection-body"></tbody>
                 </table>
             </div>
 
             <!-- お気に入り商品グリッド -->
             <div id="favorites-container" class="hidden mb-24">
-                <div id="favorites-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"></div>
+                <div id="favorites-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 text-black"></div>
             </div>
 
-            <!-- 売買履歴 -->
+            <!-- 全取引履歴 -->
             <div id="global-history-container" class="hidden glass rounded-[32px] overflow-hidden border border-black/[0.03] mb-24 bg-white/40 text-black">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left border-collapse text-black">
                     <thead>
                         <tr class="text-[9px] text-neutral-400 uppercase tracking-[0.2em] font-black border-b border-black/[0.03] bg-black/[0.01]">
-                            <th class="pl-8 py-6 w-24">Item</th>
-                            <th class="px-4 py-6">Date</th>
-                            <th class="px-4 py-6">Reference Model</th>
-                            <th class="px-4 py-6">Series</th>
-                            <th class="px-4 py-6">Type</th>
-                            <th class="px-4 py-6 text-right pr-8">Price</th>
+                            <th class="pl-8 py-6 w-24 text-black">Item</th>
+                            <th class="px-4 py-6 text-black">Date</th>
+                            <th class="px-4 py-6 text-black">Reference Model</th>
+                            <th class="px-4 py-6 text-black">Series</th>
+                            <th class="px-4 py-6 text-black">Type</th>
+                            <th class="px-4 py-6 text-right pr-8 text-black">Price</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic" id="global-history-body"></tbody>
+                    <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic text-black" id="global-history-body"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
     <!-- 2. カテゴリー詳細 -->
-    <main id="detail-view" class="hidden-view pt-32 pb-24 text-black">
-        <div class="max-w-[1400px] mx-auto px-6">
+    <main id="detail-view" class="hidden-view pt-32 pb-24 text-black text-black">
+        <div class="max-w-[1400px] mx-auto px-6 text-black">
             <button onclick="showListView()" class="mb-10 text-[10px] font-bold text-neutral-400 hover:text-black transition uppercase tracking-widest italic">← Back to Market</button>
-            <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-8 border-b border-black/[0.05] pb-12">
-                <div class="flex items-center gap-10">
-                    <div class="w-40 h-40 rounded-3xl overflow-hidden border border-black/[0.05] shadow-2xl bg-white relative p-1.5">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-8 border-b border-black/[0.05] pb-12 text-black">
+                <div class="flex items-center gap-10 text-black">
+                    <div class="w-40 h-40 rounded-3xl overflow-hidden border border-black/[0.05] shadow-2xl bg-white relative p-1.5 text-black">
                         <img id="detail-image" src="" alt="Category Image" class="w-full h-full object-cover rounded-[26px]">
                     </div>
-                    <div>
-                        <div class="flex items-center space-x-3 mb-1">
+                    <div class="text-black">
+                        <div class="flex items-center space-x-3 mb-1 text-black">
                             <p id="detail-ref-prefix" class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest font-mono italic">RX-REG-000</p>
                             <span id="detail-star" class="star-icon" onclick="toggleWatchlistFromDetail()">☆</span>
                         </div>
                         <h1 id="detail-title" class="text-6xl font-black tracking-tighter italic uppercase text-black leading-none">Series</h1>
-                        <button id="btn-category-history" class="mt-4 text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600 hover:text-emerald-800 transition">View Series Activity →</button>
+                        <div class="flex items-center space-x-4 mt-6 text-black">
+                            <button onclick="toggleDetailTab('collection')" id="detail-tab-collection" class="tab-btn active font-black italic">Collection</button>
+                            <button onclick="toggleDetailTab('history')" id="detail-tab-history" class="tab-btn font-black italic">Activity</button>
+                        </div>
                     </div>
                 </div>
-                <div class="flex gap-4 font-mono italic">
+                <div class="flex gap-4 font-mono italic text-black text-black">
                     <div class="glass px-8 py-6 rounded-2xl border border-black/[0.03] bg-white/80">
-                        <p class="text-[9px] text-neutral-400 uppercase mb-1 font-bold tracking-widest text-center">最安値</p>
+                        <p class="text-[9px] text-neutral-400 uppercase mb-1 font-bold tracking-widest text-center text-neutral-400">最安値</p>
                         <div class="text-3xl font-black text-black price-glow">¥<span id="detail-price">0</span>〜</div>
                     </div>
                     <div class="glass px-8 py-6 rounded-2xl border border-black/[0.03] flex flex-col justify-center items-center min-w-[140px]">
-                        <p class="text-[9px] text-neutral-400 uppercase mb-1 font-bold tracking-widest text-center">Analytics</p>
+                        <p class="text-[9px] text-neutral-400 uppercase mb-1 font-bold tracking-widest text-center text-neutral-400">Analytics</p>
                         <div id="detail-change" class="text-xl font-black">0%</div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
-                <div class="flex items-center space-x-2">
-                    <span class="text-[8px] font-black text-neutral-400 uppercase tracking-widest mr-2 italic">Condition:</span>
-                    <button onclick="updateFilter('all')" class="filter-chip active" data-filter="all">すべて</button>
-                    <button onclick="updateFilter('新品')" class="filter-chip" data-filter="新品">新品</button>
-                    <button onclick="updateFilter('中古')" class="filter-chip" data-filter="中古">中古</button>
+            <!-- シリーズ内：コレクション -->
+            <div id="detail-collection-view" class="text-black">
+                <div class="flex flex-wrap justify-between items-center mb-8 gap-4 text-black">
+                    <div class="flex items-center space-x-2 text-black text-black">
+                        <span class="text-[8px] font-black text-neutral-400 uppercase tracking-widest mr-2 italic">Condition:</span>
+                        <button onclick="updateFilter('all')" class="filter-chip active" data-filter="all">すべて</button>
+                        <button onclick="updateFilter('新品')" class="filter-chip" data-filter="新品">新品</button>
+                        <button onclick="updateFilter('中古')" class="filter-chip" data-filter="中古">中古</button>
+                    </div>
+                    <div class="flex items-center space-x-2 text-black text-black">
+                        <span class="text-[8px] font-black text-neutral-400 uppercase tracking-widest mr-2 italic">Sort:</span>
+                        <button onclick="updateSort('default')" class="filter-chip active" data-sort="default">標準</button>
+                        <button onclick="updateSort('price-asc')" class="filter-chip" data-sort="price-asc">安い順</button>
+                        <button onclick="updateSort('price-desc')" class="filter-chip" data-sort="price-desc">高い順</button>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-[8px] font-black text-neutral-400 uppercase tracking-widest mr-2 italic">Sort:</span>
-                    <button onclick="updateSort('default')" class="filter-chip active" data-sort="default">標準</button>
-                    <button onclick="updateSort('price-asc')" class="filter-chip" data-sort="price-asc">安い順</button>
-                    <button onclick="updateSort('price-desc')" class="filter-chip" data-sort="price-desc">高い順</button>
-                </div>
+                <div id="detail-listings-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 text-black"></div>
             </div>
 
-            <div id="detail-listings-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 text-black"></div>
+            <!-- シリーズ内：履歴 -->
+            <div id="detail-history-view" class="hidden text-black text-black text-black">
+                <div class="glass rounded-[32px] overflow-hidden border border-black/[0.03] bg-white/40 text-black text-black">
+                    <table class="w-full text-left border-collapse text-black text-black">
+                        <thead>
+                            <tr class="text-[9px] text-neutral-400 uppercase tracking-[0.2em] font-black border-b border-black/[0.03] bg-black/[0.01]">
+                                <th class="pl-8 py-6 w-24 text-black">Item</th>
+                                <th class="px-4 py-6 text-black">Date</th>
+                                <th class="px-4 py-6 text-black">Reference Model</th>
+                                <th class="px-4 py-6 text-right pr-8 text-black">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic text-black text-black" id="detail-history-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- 3. 個別商品詳細 -->
+    <!-- 3. 商品詳細 -->
     <main id="item-view" class="hidden-view pt-32 pb-24 text-black">
-        <div class="max-w-[1200px] mx-auto px-6">
-            <button id="btn-back-to-category" class="mb-10 text-[10px] font-bold text-neutral-400 hover:text-black transition group uppercase tracking-widest italic">← Back to Series</button>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="glass rounded-[48px] overflow-hidden aspect-square bg-white shadow-3xl relative border border-black/[0.05] p-2.5" id="item-detail-image-container">
+        <div class="max-w-[1200px] mx-auto px-6 text-black">
+            <button id="btn-back-to-category" class="mb-10 text-[10px] font-bold text-neutral-400 hover:text-black transition uppercase tracking-widest italic text-neutral-400">← Back to Series</button>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 text-black">
+                <div class="glass rounded-[48px] overflow-hidden aspect-square bg-white shadow-3xl relative border border-black/[0.05] p-2.5 text-black" id="item-detail-image-container">
                     <img id="item-detail-image" src="" class="w-full h-full object-cover rounded-[40px]">
                 </div>
-                <div class="flex flex-col justify-center">
-                    <h2 id="item-detail-category" class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-2 italic font-mono">Registry Class</h2>
+                <div class="flex flex-col justify-center text-black">
+                    <h2 id="item-detail-category" class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-2 italic font-mono text-neutral-400">Registry Class</h2>
                     <h1 id="item-detail-title" class="text-5xl font-black tracking-tighter mb-6 uppercase italic text-black leading-tight italic">Reference</h1>
-                    <div class="glass p-10 rounded-[40px] border border-black/[0.04] italic bg-white/20">
-                        <div class="flex flex-col gap-6 mb-8 font-mono italic">
-                            <div class="border-l-4 border-black pl-6">
-                                <p class="text-[11px] text-neutral-400 mb-1 font-bold uppercase">鑑定価格</p>
+                    <div class="glass p-10 rounded-[40px] border border-black/[0.04] italic bg-white/20 text-black">
+                        <div class="flex flex-col gap-6 mb-8 font-mono italic text-black">
+                            <div class="border-l-4 border-black pl-6 text-black">
+                                <p class="text-[11px] text-neutral-400 mb-1 font-bold uppercase text-neutral-400">鑑定価格</p>
                                 <div class="text-5xl font-black text-black italic tracking-tighter price-glow">¥<span id="item-detail-price">0</span></div>
                                 <div id="item-detail-condition-badge" class="mt-2 inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm text-white">新品</div>
                             </div>
-                            <div class="flex justify-between items-center pt-6 border-t border-black/[0.05]">
-                                <p class="text-[11px] text-neutral-400 font-bold uppercase tracking-widest italic">Current High offer</p>
+                            <div class="flex justify-between items-center pt-6 border-t border-black/[0.05] text-black">
+                                <p class="text-[11px] text-neutral-400 font-bold uppercase tracking-widest italic text-neutral-400">Current High offer</p>
                                 <div id="item-detail-highest-offer" class="text-3xl font-black text-emerald-600 leading-none">¥0</div>
                             </div>
                         </div>
-                        <p id="item-detail-description" class="text-xs text-neutral-500 leading-relaxed mb-10 italic opacity-80 h-24 overflow-y-auto pr-2"></p>
-                        <div class="flex gap-4">
+                        <p id="item-detail-description" class="text-xs text-neutral-500 leading-relaxed mb-10 italic opacity-80 h-24 overflow-y-auto pr-2 text-neutral-500"></p>
+                        <div class="flex gap-4 text-black">
                             <button id="buy-button" class="flex-1 bg-black text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.4em] btn-hover shadow-lg active:scale-95 transition-all disabled:opacity-30" onclick="handlePurchaseClick()">BUY / 注文を確定する</button>
                             <button id="btn-item-offer" class="flex-1 glass text-black py-5 rounded-2xl font-black text-xs uppercase tracking-[0.4em] btn-hover border-black/10 transition-all active:scale-95 disabled:opacity-30" onclick="openOfferModal(null, currentFilteringItem)">Place offer</button>
                         </div>
@@ -375,32 +398,31 @@
         </div>
     </main>
 
-    <!-- モーダル：出品画面 -->
-    <div id="listing-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 overflow-y-auto text-black">
-        <div class="glass w-full max-w-5xl p-10 rounded-[48px] shadow-3xl relative border border-black/10 my-auto bg-white overflow-hidden">
-            <button onclick="closeModal()" class="absolute top-10 right-10 text-neutral-400 hover:text-black transition z-50 font-black uppercase text-[10px] tracking-widest italic">Close</button>
-            <form id="listing-form" onsubmit="handleListingSubmit(event)" class="grid grid-cols-1 lg:grid-cols-2 gap-10 text-black">
-                <div class="space-y-6 text-left">
+    <!-- モーダル：出品 -->
+    <div id="listing-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 overflow-y-auto text-black text-black text-black text-black text-black">
+        <div class="glass w-full max-w-5xl p-10 rounded-[48px] shadow-3xl relative border border-black/10 my-auto bg-white overflow-hidden text-black text-black">
+            <button onclick="closeModal()" class="absolute top-10 right-10 text-neutral-400 hover:text-black transition z-50 font-black uppercase text-[10px] tracking-widest italic text-neutral-400">Close</button>
+            <form id="listing-form" onsubmit="handleListingSubmit(event)" class="grid grid-cols-1 lg:grid-cols-2 gap-10 text-black text-black text-black">
+                <div class="space-y-6 text-left text-black text-black">
                     <h2 class="text-3xl font-black tracking-tighter uppercase italic text-black">New Entry</h2>
-                    <div class="space-y-5">
+                    <div class="space-y-5 text-black">
                         <div>
                             <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">Collection Series</label>
-                            <select id="form-category" required class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-xs italic"></select>
+                            <select id="form-category" required class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-xs italic text-black"></select>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4 text-black text-black text-black">
                             <div>
                                 <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">Ref No.</label>
-                                <input type="text" id="form-name" required placeholder="REF..." class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs font-bold uppercase">
+                                <input type="text" id="form-name" required placeholder="REF..." class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs font-bold uppercase text-black">
                             </div>
                             <div>
-                                <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">鑑定価格 (JPY)</label>
-                                <input type="number" id="form-price" required placeholder="0" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs font-mono font-bold">
+                                <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic text-neutral-400">鑑定価格 (JPY)</label>
+                                <input type="number" id="form-price" required placeholder="0" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs font-mono font-bold text-black text-black">
                             </div>
                         </div>
-                        <!-- 状態プルダウン -->
-                        <div>
+                        <div class="text-black">
                             <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-2 italic">状態</label>
-                            <select id="form-condition-select" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-[10px] uppercase italic transition-all">
+                            <select id="form-condition-select" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-[10px] uppercase italic transition-all text-black">
                                 <option value="新品">新品</option>
                                 <option value="新品同様＆未使用">新品同様＆未使用</option>
                                 <option value="中古(非常に良い)">中古(非常に良い)</option>
@@ -409,46 +431,43 @@
                                 <option value="一部に不具合あり">一部に不具合あり</option>
                             </select>
                         </div>
-                        <!-- 付属品プルダウン -->
-                        <div>
+                        <div class="text-black">
                             <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-2 italic">付属品</label>
-                            <select id="form-accessories-select" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-[10px] uppercase italic transition-all">
+                            <select id="form-accessories-select" class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-[10px] uppercase italic transition-all text-black">
                                 <option value="全てあり">全てあり</option>
                                 <option value="正規のボックスのみあり">正規のボックスのみあり</option>
                                 <option value="正規の書類のみあり">正規の書類のみあり</option>
                                 <option value="全てなし">全てなし</option>
                             </select>
                         </div>
-                        <!-- 説明欄 -->
-                        <div>
+                        <div class="text-black">
                             <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">商品の説明</label>
-                            <textarea id="form-description" rows="3" placeholder="商品のコンディション、メンテナンス歴、鑑定情報など..." class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs italic leading-relaxed"></textarea>
+                            <textarea id="form-description" rows="3" placeholder="メンテナンス歴、コンディションの詳細など..." class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs italic leading-relaxed text-black"></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center gap-6 text-center">
+                <div class="flex flex-col items-center gap-6 text-center text-black text-black text-black">
                     <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-widest italic">Composition Control</label>
-                    <div id="image-edit-container" class="shadow-2xl border-2 border-dashed border-neutral-100">
+                    <div id="image-edit-container" class="shadow-2xl border-2 border-dashed border-neutral-100 text-black">
                         <input type="file" id="form-image" accept="image/*" onchange="initImageEditor(event)" class="absolute inset-0 opacity-0 cursor-pointer z-30">
-                        <div id="preview-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-neutral-300 p-8 text-center font-black uppercase tracking-widest text-[9px] italic">Tap to Upload Photo</div>
+                        <div id="preview-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-neutral-300 p-8 text-center font-black uppercase tracking-widest text-[9px] italic text-neutral-300">Tap to Upload Photo</div>
                         <img id="image-editor-target" src="" class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 origin-center select-none" style="max-width: none; max-height: none;">
                     </div>
-                    <!-- 修正：ボタンテキストを「出品する」に変更 -->
                     <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.4em] btn-hover shadow-xl italic mt-auto active:scale-95 transition-all">出品する</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- オファーモーダル -->
-    <div id="offer-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6 text-black italic text-center">
-        <div class="glass w-full max-w-md p-10 rounded-[48px] border border-black/10 shadow-3xl bg-white/95">
-            <button onclick="closeOfferModal()" class="absolute top-10 right-10 text-gray-400 hover:text-black transition italic uppercase font-black text-[10px] tracking-widest">Close</button>
+    <!-- オファー -->
+    <div id="offer-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6 text-black italic text-center text-black text-black text-black">
+        <div class="glass w-full max-w-md p-10 rounded-[48px] border border-black/10 shadow-3xl bg-white/95 text-black">
+            <button onclick="closeOfferModal()" class="absolute top-10 right-10 text-gray-400 hover:text-black transition italic uppercase font-black text-[10px] tracking-widest text-neutral-400">Close</button>
             <h2 class="text-3xl font-black tracking-tighter mb-2 uppercase italic text-black">Place Proposal</h2>
-            <p id="offer-item-name" class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-10 italic">REF NAME</p>
-            <form onsubmit="handleOfferSubmit(event)" class="space-y-8 text-black">
-                <div><label class="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4 italic font-mono text-center">Current Peak offer</label><div id="offer-current-best" class="w-full bg-neutral-50 border border-black/30 rounded-2xl px-6 py-6 font-mono text-emerald-600 italic font-black text-3xl italic leading-none text-center shadow-inner">¥0</div></div>
-                <div><label class="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4 italic font-mono text-center">Your Proposal (JPY)</label><input type="number" id="form-offer-price" required placeholder="Enter amount..." class="w-full bg-neutral-50 border border-black/10 rounded-2xl px-6 py-6 outline-none focus:border-black text-black text-3xl font-bold font-mono italic leading-none transition-all text-center"></div>
+            <p id="offer-item-name" class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-10 italic text-neutral-400">REF NAME</p>
+            <form onsubmit="handleOfferSubmit(event)" class="space-y-8 text-black text-black text-black">
+                <div><label class="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4 italic font-mono text-center text-neutral-400">Current Peak offer</label><div id="offer-current-best" class="w-full bg-neutral-50 border border-black/30 rounded-2xl px-6 py-6 font-mono text-emerald-600 italic font-black text-3xl italic leading-none text-center shadow-inner">¥0</div></div>
+                <div><label class="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4 italic font-mono text-center text-neutral-400">Your Proposal (JPY)</label><input type="number" id="form-offer-price" required placeholder="Enter amount..." class="w-full bg-neutral-50 border border-black/10 rounded-2xl px-6 py-6 outline-none focus:border-black text-black text-3xl font-bold font-mono italic leading-none transition-all text-center text-black"></div>
                 <button type="submit" class="w-full bg-black text-white py-7 rounded-[32px] font-black text-[12px] uppercase tracking-[0.5em] shadow-xl active:scale-95 transition-all shadow-lg italic">Confirm offer</button>
             </form>
         </div>
@@ -520,12 +539,38 @@
             document.getElementById('detail-image').src = cat.img;
             document.getElementById('detail-ref-prefix').innerText = `RX-REG-${id.toString().padStart(3, '0')}`;
             updateDetailStar();
-            document.getElementById('btn-category-history').onclick = () => { toggleMainTab('history'); renderGlobalHistory(id); };
-            currentFilter = 'all'; currentSort = 'default'; updateFilter('all'); updateSort('default');
+            toggleDetailTab('collection');
             [listView, detailView, itemView].forEach(v => { if(v){ v.style.display = 'none'; v.classList.add('hidden-view'); } });
             if(detailView){ detailView.style.display = 'block'; setTimeout(() => detailView.classList.remove('hidden-view'), 50); }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
+
+        window.toggleDetailTab = function(tab) {
+            const collView = document.getElementById('detail-collection-view');
+            const histView = document.getElementById('detail-history-view');
+            const collBtn = document.getElementById('detail-tab-collection');
+            const histBtn = document.getElementById('detail-tab-history');
+            if (tab === 'collection') {
+                collView.classList.remove('hidden'); histView.classList.add('hidden');
+                collBtn.classList.add('active'); histBtn.classList.remove('active');
+                renderDetailListings(activeCategoryId);
+            } else {
+                collView.classList.add('hidden'); histView.classList.remove('hidden');
+                collBtn.classList.remove('active'); histBtn.classList.add('active');
+                renderCategoryHistory(activeCategoryId);
+            }
+        };
+
+        function renderCategoryHistory(catId) {
+            const body = document.getElementById('detail-history-body'); body.innerHTML = '';
+            const filtered = transactionHistory.filter(t => t.categoryId === catId);
+            if(filtered.length === 0) { body.innerHTML = `<tr><td colspan="4" class="py-20 text-center opacity-40 uppercase tracking-widest italic text-neutral-400">No history found for this series</td></tr>`; return; }
+            filtered.forEach(tx => {
+                const row = document.createElement('tr'); row.className = 'hover:bg-black/[0.01] transition-all text-black';
+                row.innerHTML = `<td class="pl-8 py-4"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5 text-black"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40 text-black text-black">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black text-black">${tx.itemName}</td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none text-black">¥${tx.price}</td>`;
+                body.appendChild(row);
+            });
+        }
 
         window.toggleMainTab = function(tab) {
             currentMainTab = tab;
@@ -542,7 +587,7 @@
                 collectionCont.classList.add('hidden'); favoritesCont.classList.add('hidden'); historyCont.classList.remove('hidden');
                 title.innerText = 'Market Activity'; subtitle.innerText = 'Verified Global Transaction Logs'; renderGlobalHistory();
             } else if (tab === 'favorites') {
-                collectionCont.classList.add('hidden'); favoritesCont.classList.add('hidden'); historyCont.classList.add('hidden');
+                collectionCont.classList.add('hidden'); favoritesCont.classList.remove('hidden'); historyCont.classList.add('hidden');
                 title.innerText = 'Favorite Items'; subtitle.innerText = 'Your Curated Watch Collection'; renderFavoriteItems();
             } else {
                 collectionCont.classList.remove('hidden'); favoritesCont.classList.add('hidden'); historyCont.classList.add('hidden');
@@ -593,8 +638,8 @@
             }
             filteredCategories.forEach((cat, i) => {
                 const isWatched = watchlist.has(cat.id);
-                const row = document.createElement('tr'); row.className = 'registry-row cursor-pointer group italic text-black transition-all'; row.onclick = () => showDetail(cat.id);
-                row.innerHTML = `<td class="pl-8 py-7 text-center text-black"><span onclick="toggleWatchlist(event, ${cat.id})" class="star-icon ${isWatched ? 'active' : ''}">${isWatched ? '★' : '☆'}</span></td><td class="px-4 py-7 text-neutral-400 text-[10px] font-black italic text-center opacity-40 group-hover:opacity-100 group-hover:text-black font-mono">${(i + 1).toString().padStart(2, '0')}</td><td class="px-4 py-6 flex items-center space-x-6 text-black"><div class="w-16 h-16 rounded-2xl overflow-hidden border border-black/[0.04] group-hover:scale-105 transition-all shadow-lg bg-neutral-50 p-0.5"><img src="${cat.img}" class="w-full h-full object-cover rounded-2xl"></div><div class="font-black uppercase text-black transition italic text-lg tracking-tighter">${cat.name}</div></td><td class="px-4 py-7 text-black"><div class="inline-flex items-center glass px-4 py-2 rounded-full border border-black/[0.08] bg-white/40 text-black font-black text-base italic shadow-sm">¥${cat.floor}〜</div></td><td class="px-4 py-7 text-right pr-12 font-bold italic font-mono text-base tracking-widest ${cat.change.startsWith('+') ? 'text-emerald-600' : 'text-red-600'} transition-all">${cat.change}</td>`;
+                const row = document.createElement('tr'); row.className = 'registry-row cursor-pointer group italic text-black transition-all text-black'; row.onclick = () => showDetail(cat.id);
+                row.innerHTML = `<td class="pl-8 py-7 text-center text-black text-black"><span onclick="toggleWatchlist(event, ${cat.id})" class="star-icon ${isWatched ? 'active' : ''}">${isWatched ? '★' : '☆'}</span></td><td class="px-4 py-7 text-neutral-400 text-[10px] font-black italic text-center opacity-40 group-hover:opacity-100 group-hover:text-black font-mono text-black">${(i + 1).toString().padStart(2, '0')}</td><td class="px-4 py-6 flex items-center space-x-6 text-black text-black"><div class="w-16 h-16 rounded-2xl overflow-hidden border border-black/[0.04] group-hover:scale-105 transition-all shadow-lg bg-neutral-50 p-0.5 text-black"><img src="${cat.img}" class="w-full h-full object-cover rounded-2xl"></div><div class="font-black uppercase text-black transition italic text-lg tracking-tighter text-black">${cat.name}</div></td><td class="px-4 py-7 text-black text-black"><div class="inline-flex items-center glass px-4 py-2 rounded-full border border-black/[0.08] bg-white/40 text-black font-black text-base italic shadow-sm text-black">¥${cat.floor}〜</div></td><td class="px-4 py-7 text-right pr-12 font-bold italic font-mono text-base tracking-widest ${cat.change.startsWith('+') ? 'text-emerald-600' : 'text-red-600'} transition-all text-black">${cat.change}</td>`;
                 tbody.appendChild(row);
             });
         };
@@ -604,7 +649,7 @@
             if(!categorySamples[catId]) {
                 categorySamples[catId] = []; const cat = categories.find(c=>c.id===catId);
                 const basePrice = parseInt(cat.floor.replace(/,/g, ''));
-                for(let i=0; i<15; i++) {
+                for(let i=0; i<12; i++) {
                     const randomPrice = basePrice + Math.floor(Math.random() * 50) * 10000;
                     categorySamples[catId].push({ id: `s-${catId}-${i}`, categoryId: catId, name: `${cat.name} Ref.MOD-${100 + i}`, price: randomPrice.toLocaleString(), priceVal: randomPrice, condition: Math.random() > 0.4 ? "中古(非常に良い)" : "新品", image: cat.img, highestOffer: Math.floor(randomPrice * (0.8 + Math.random() * 0.2)), sold: false, description: "Authentic registry item verified by CHRONO-NEXUS protocol.", accessories: "全てあり" });
                 }
@@ -614,9 +659,10 @@
             if (currentSort === 'price-asc') allItems.sort((a, b) => a.priceVal - b.priceVal);
             else if (currentSort === 'price-desc') allItems.sort((a, b) => b.priceVal - a.priceVal);
             allItems.forEach(item => {
-                const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black'; card.onclick = () => showItemDetail(item);
+                const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black text-black'; card.onclick = () => showItemDetail(item);
                 const isFav = favoriteItemIds.has(item.id); const condColor = item.condition.includes("新品") ? "bg-black" : "bg-red-600";
-                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon ${isFav ? 'active' : ''}">${isFav ? '❤' : '♡'}</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow"><span class="text-[10px] mr-1 opacity-20 italic">¥</span>${item.price}</div><div class="text-right"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
+                // 円マークを数字と同じ濃さに (opacity削除)
+                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon ${isFav ? 'active' : ''}">${isFav ? '❤' : '♡'}</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow"><span class="text-xl mr-1 italic">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
                 listingsGrid.appendChild(card);
             });
         };
@@ -626,11 +672,11 @@
             let allFavoritedItems = [];
             Object.values(categorySamples).forEach(items => { items.forEach(item => { if (favoriteItemIds.has(item.id)) allFavoritedItems.push(item); }); });
             individualListings.forEach(item => { if (favoriteItemIds.has(item.id)) allFavoritedItems.push(item); });
-            if (allFavoritedItems.length === 0) { favGrid.innerHTML = '<div class="col-span-full py-24 text-center opacity-30 italic uppercase font-black tracking-widest text-black">No favorites yet.</div>'; return; }
+            if (allFavoritedItems.length === 0) { favGrid.innerHTML = '<div class="col-span-full py-24 text-center opacity-30 italic uppercase font-black tracking-widest text-black text-black">No favorites yet.</div>'; return; }
             allFavoritedItems.forEach(item => {
-                const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black'; card.onclick = () => showItemDetail(item);
+                const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black text-black'; card.onclick = () => showItemDetail(item);
                 const condColor = item.condition.includes("新品") ? "bg-black" : "bg-red-600";
-                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon active">❤</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow"><span class="text-[10px] mr-1 opacity-20 italic">¥</span>${item.price}</div><div class="text-right"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
+                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon active">❤</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow text-black"><span class="text-xl mr-1 italic text-black">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
                 favGrid.appendChild(card);
             });
         };
@@ -640,8 +686,8 @@
             const filtered = catId ? transactionHistory.filter(t => t.categoryId === catId) : transactionHistory;
             if(filtered.length === 0) { globalHistoryBody.innerHTML = `<tr><td colspan="6" class="py-20 text-center opacity-40 uppercase tracking-widest italic text-black">No entries found</td></tr>`; return; }
             filtered.forEach(tx => {
-                const row = document.createElement('tr'); row.className = 'hover:bg-black/[0.01] transition-all text-black';
-                row.innerHTML = `<td class="pl-8 py-4"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black">${tx.itemName}</td><td class="px-4 py-6 text-[10px] uppercase font-bold opacity-60 text-black">${tx.categoryName}</td><td class="px-4 py-6"><span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter bg-emerald-100 text-emerald-800">SALE</span></td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none">¥${tx.price}</td>`;
+                const row = document.createElement('tr'); row.className = 'hover:bg-black/[0.01] transition-all text-black text-black';
+                row.innerHTML = `<td class="pl-8 py-4 text-black"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5 text-black"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40 text-black text-black text-black">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black text-black text-black">${tx.itemName}</td><td class="px-4 py-6 text-[10px] uppercase font-bold opacity-60 text-black text-black text-black">${tx.categoryName}</td><td class="px-4 py-6 text-black text-black"><span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter bg-emerald-100 text-emerald-800 text-black">SALE</span></td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none text-black">¥${tx.price}</td>`;
                 globalHistoryBody.appendChild(row);
             });
         };
@@ -653,7 +699,7 @@
             document.querySelectorAll('#item-detail-price').forEach(el => el.innerText = item.price);
             document.getElementById('item-detail-highest-offer').innerText = item.highestOffer > 0 ? `¥${item.highestOffer.toLocaleString()}` : "--";
             let accessoryInfo = item.accessories ? "\n\n付属品: " + item.accessories : "";
-            document.getElementById('item-detail-description').innerText = (item.description || "説明なし") + accessoryInfo;
+            document.getElementById('item-detail-description').innerText = (item.description || "詳細なし") + accessoryInfo;
             const imgContainer = document.getElementById('item-detail-image-container');
             const oldSold = imgContainer.querySelector('.sold-ribbon'); if (oldSold) oldSold.remove();
             if (item.sold) {
@@ -721,8 +767,6 @@
             reader.readAsDataURL(file);
         };
 
-        window.editorRotate = function() { editorState.rotate = (editorState.rotate + 90) % 360; updateVisuals(); };
-        window.editorFlip = function() { editorState.flip = !editorState.flip; updateVisuals(); };
         window.updateVisuals = function() {
             const finalScale = editorState.baseScale * editorState.zoom; const flipScale = editorState.flip ? -1 : 1;
             editorImgEl.style.transform = `translate(calc(-50% + ${editorState.currentX}px), calc(-50% + ${editorState.currentY}px)) scale(${finalScale}) scaleX(${flipScale}) rotate(${editorState.rotate}deg)`;
@@ -759,7 +803,7 @@
                 image: fImg, isUserListed: true, highestOffer: 0, sold: false,
                 description: description, accessories: accessories
             });
-            closeModal(); showToast("Success", "Registry entry confirmed."); if (activeCategoryId === catId) renderDetailListings(catId);
+            closeModal(); showToast("Success", "Registry entry confirmed."); if (activeCategoryId === catId) toggleDetailTab('collection');
         };
 
         let scene, camera, renderer, cube;
