@@ -357,7 +357,7 @@
                                 <th class="px-4 py-6 text-right pr-8 text-black">Price</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic text-black text-black" id="detail-history-body"></tbody>
+                        <tbody class="divide-y divide-black/[0.02] text-sm font-mono italic" id="detail-history-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -399,18 +399,18 @@
     </main>
 
     <!-- モーダル：出品 -->
-    <div id="listing-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 overflow-y-auto text-black text-black text-black text-black text-black">
-        <div class="glass w-full max-w-5xl p-10 rounded-[48px] shadow-3xl relative border border-black/10 my-auto bg-white overflow-hidden text-black text-black">
+    <div id="listing-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 overflow-y-auto text-black">
+        <div class="glass w-full max-w-5xl p-10 rounded-[48px] shadow-3xl relative border border-black/10 my-auto bg-white overflow-hidden text-black">
             <button onclick="closeModal()" class="absolute top-10 right-10 text-neutral-400 hover:text-black transition z-50 font-black uppercase text-[10px] tracking-widest italic text-neutral-400">Close</button>
-            <form id="listing-form" onsubmit="handleListingSubmit(event)" class="grid grid-cols-1 lg:grid-cols-2 gap-10 text-black text-black text-black">
-                <div class="space-y-6 text-left text-black text-black">
+            <form id="listing-form" onsubmit="handleListingSubmit(event)" class="grid grid-cols-1 lg:grid-cols-2 gap-10 text-black">
+                <div class="space-y-6 text-left text-black">
                     <h2 class="text-3xl font-black tracking-tighter uppercase italic text-black">New Entry</h2>
                     <div class="space-y-5 text-black">
                         <div>
                             <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">Collection Series</label>
                             <select id="form-category" required class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black font-bold text-black text-xs italic text-black"></select>
                         </div>
-                        <div class="grid grid-cols-2 gap-4 text-black text-black text-black">
+                        <div class="grid grid-cols-2 gap-4 text-black">
                             <div>
                                 <label class="block text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1 italic">Ref No.</label>
                                 <input type="text" id="form-name" required placeholder="REF..." class="w-full bg-neutral-50 border border-black/5 rounded-xl px-4 py-3 outline-none focus:border-black text-black text-xs font-bold uppercase text-black">
@@ -446,7 +446,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center gap-6 text-center text-black text-black text-black">
+                <div class="flex flex-col items-center gap-6 text-center text-black text-black">
                     <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-widest italic">Composition Control</label>
                     <div id="image-edit-container" class="shadow-2xl border-2 border-dashed border-neutral-100 text-black">
                         <input type="file" id="form-image" accept="image/*" onchange="initImageEditor(event)" class="absolute inset-0 opacity-0 cursor-pointer z-30">
@@ -460,7 +460,7 @@
     </div>
 
     <!-- オファー -->
-    <div id="offer-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6 text-black italic text-center text-black text-black text-black">
+    <div id="offer-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6 text-black italic text-center text-black text-black">
         <div class="glass w-full max-w-md p-10 rounded-[48px] border border-black/10 shadow-3xl bg-white/95 text-black">
             <button onclick="closeOfferModal()" class="absolute top-10 right-10 text-gray-400 hover:text-black transition italic uppercase font-black text-[10px] tracking-widest text-neutral-400">Close</button>
             <h2 class="text-3xl font-black tracking-tighter mb-2 uppercase italic text-black">Place Proposal</h2>
@@ -510,6 +510,28 @@
         let tbody, listView, detailView, itemView, globalHistoryBody, listingsGrid, modal, offerModal, categorySelect;
         let editorImgEl, editorContainer;
 
+        // --- ブラウザバック管理 (History API) ---
+        window.onpopstate = function(event) {
+            if (event.state) {
+                const s = event.state;
+                if (s.view === 'list') {
+                    currentMainTab = s.tab || 'collection';
+                    toggleMainTab(currentMainTab, false);
+                } else if (s.view === 'detail') {
+                    showDetail(s.id, false);
+                } else if (s.view === 'item') {
+                    showItemDetail(s.item, false);
+                }
+            } else {
+                showListView(false);
+            }
+        };
+
+        // ナビゲーションの初期状態を履歴に保存
+        window.addEventListener('DOMContentLoaded', () => {
+            history.replaceState({ view: 'list', tab: 'collection' }, "");
+        });
+
         window.initializeDOMElements = function() {
             tbody = document.getElementById('collection-body');
             listView = document.getElementById('list-view');
@@ -524,14 +546,16 @@
             editorContainer = document.getElementById('image-edit-container');
         };
 
-        window.showListView = function() {
+        window.showListView = function(push = true) {
             activeCategoryId = null;
+            if (push) history.pushState({ view: 'list', tab: currentMainTab }, "");
             [listView, detailView, itemView].forEach(v => { if(v){ v.style.display = 'none'; v.classList.add('hidden-view'); } });
             if(listView){ listView.style.display = 'block'; setTimeout(() => listView.classList.remove('hidden-view'), 50); }
         };
 
-        window.showDetail = function(id) {
+        window.showDetail = function(id, push = true) {
             activeCategoryId = id; const cat = categories.find(c => c.id === id);
+            if (push) history.pushState({ view: 'detail', id: id }, "");
             document.getElementById('detail-title').innerText = cat.name;
             document.getElementById('detail-price').innerText = cat.floor;
             document.getElementById('detail-change').innerText = cat.change;
@@ -561,18 +585,7 @@
             }
         };
 
-        function renderCategoryHistory(catId) {
-            const body = document.getElementById('detail-history-body'); body.innerHTML = '';
-            const filtered = transactionHistory.filter(t => t.categoryId === catId);
-            if(filtered.length === 0) { body.innerHTML = `<tr><td colspan="4" class="py-20 text-center opacity-40 uppercase tracking-widest italic text-neutral-400">No history found for this series</td></tr>`; return; }
-            filtered.forEach(tx => {
-                const row = document.createElement('tr'); row.className = 'hover:bg-black/[0.01] transition-all text-black';
-                row.innerHTML = `<td class="pl-8 py-4"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5 text-black"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40 text-black text-black">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black text-black">${tx.itemName}</td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none text-black">¥${tx.price}</td>`;
-                body.appendChild(row);
-            });
-        }
-
-        window.toggleMainTab = function(tab) {
+        window.toggleMainTab = function(tab, push = true) {
             currentMainTab = tab;
             const collectionCont = document.getElementById('collection-container');
             const favoritesCont = document.getElementById('favorites-container');
@@ -580,9 +593,15 @@
             const tabs = { collection: 'tab-collection', watchlist: 'tab-watchlist', favorites: 'tab-favorites', history: 'tab-history' };
             const title = document.getElementById('main-title');
             const subtitle = document.getElementById('main-subtitle');
-            showListView();
+
+            if (push) history.pushState({ view: 'list', tab: tab }, "");
+            
+            [listView, detailView, itemView].forEach(v => { if(v){ v.style.display = 'none'; v.classList.add('hidden-view'); } });
+            if(listView){ listView.style.display = 'block'; listView.classList.remove('hidden-view'); }
+
             Object.values(tabs).forEach(id => document.getElementById(id).classList.remove('active'));
             document.getElementById(tabs[tab]).classList.add('active');
+
             if (tab === 'history') {
                 collectionCont.classList.add('hidden'); favoritesCont.classList.add('hidden'); historyCont.classList.remove('hidden');
                 title.innerText = 'Market Activity'; subtitle.innerText = 'Verified Global Transaction Logs'; renderGlobalHistory();
@@ -638,8 +657,8 @@
             }
             filteredCategories.forEach((cat, i) => {
                 const isWatched = watchlist.has(cat.id);
-                const row = document.createElement('tr'); row.className = 'registry-row cursor-pointer group italic text-black transition-all text-black'; row.onclick = () => showDetail(cat.id);
-                row.innerHTML = `<td class="pl-8 py-7 text-center text-black text-black"><span onclick="toggleWatchlist(event, ${cat.id})" class="star-icon ${isWatched ? 'active' : ''}">${isWatched ? '★' : '☆'}</span></td><td class="px-4 py-7 text-neutral-400 text-[10px] font-black italic text-center opacity-40 group-hover:opacity-100 group-hover:text-black font-mono text-black">${(i + 1).toString().padStart(2, '0')}</td><td class="px-4 py-6 flex items-center space-x-6 text-black text-black"><div class="w-16 h-16 rounded-2xl overflow-hidden border border-black/[0.04] group-hover:scale-105 transition-all shadow-lg bg-neutral-50 p-0.5 text-black"><img src="${cat.img}" class="w-full h-full object-cover rounded-2xl"></div><div class="font-black uppercase text-black transition italic text-lg tracking-tighter text-black">${cat.name}</div></td><td class="px-4 py-7 text-black text-black"><div class="inline-flex items-center glass px-4 py-2 rounded-full border border-black/[0.08] bg-white/40 text-black font-black text-base italic shadow-sm text-black">¥${cat.floor}〜</div></td><td class="px-4 py-7 text-right pr-12 font-bold italic font-mono text-base tracking-widest ${cat.change.startsWith('+') ? 'text-emerald-600' : 'text-red-600'} transition-all text-black">${cat.change}</td>`;
+                const row = document.createElement('tr'); row.className = 'registry-row cursor-pointer group italic text-black transition-all'; row.onclick = () => showDetail(cat.id);
+                row.innerHTML = `<td class="pl-8 py-7 text-center text-black"><span onclick="toggleWatchlist(event, ${cat.id})" class="star-icon ${isWatched ? 'active' : ''}">${isWatched ? '★' : '☆'}</span></td><td class="px-4 py-7 text-neutral-400 text-[10px] font-black italic text-center opacity-40 group-hover:opacity-100 group-hover:text-black font-mono text-black">${(i + 1).toString().padStart(2, '0')}</td><td class="px-4 py-6 flex items-center space-x-6 text-black"><div class="w-16 h-16 rounded-2xl overflow-hidden border border-black/[0.04] group-hover:scale-105 transition-all shadow-lg bg-neutral-50 p-0.5 text-black"><img src="${cat.img}" class="w-full h-full object-cover rounded-2xl"></div><div class="font-black uppercase text-black transition italic text-lg tracking-tighter text-black">${cat.name}</div></td><td class="px-4 py-7 text-black"><div class="inline-flex items-center glass px-4 py-2 rounded-full border border-black/[0.08] bg-white/40 text-black font-black text-base italic shadow-sm text-black">¥${cat.floor}〜</div></td><td class="px-4 py-7 text-right pr-12 font-bold italic font-mono text-base tracking-widest ${cat.change.startsWith('+') ? 'text-emerald-600' : 'text-red-600'} transition-all text-black">${cat.change}</td>`;
                 tbody.appendChild(row);
             });
         };
@@ -651,7 +670,7 @@
                 const basePrice = parseInt(cat.floor.replace(/,/g, ''));
                 for(let i=0; i<12; i++) {
                     const randomPrice = basePrice + Math.floor(Math.random() * 50) * 10000;
-                    categorySamples[catId].push({ id: `s-${catId}-${i}`, categoryId: catId, name: `${cat.name} Ref.MOD-${100 + i}`, price: randomPrice.toLocaleString(), priceVal: randomPrice, condition: Math.random() > 0.4 ? "中古(非常に良い)" : "新品", image: cat.img, highestOffer: Math.floor(randomPrice * (0.8 + Math.random() * 0.2)), sold: false, description: "Authentic registry item verified by CHRONO-NEXUS protocol.", accessories: "全てあり" });
+                    categorySamples[catId].push({ id: `s-${catId}-${i}`, categoryId: catId, name: `${cat.name} Ref.MOD-${100 + i}`, price: randomPrice.toLocaleString(), priceVal: randomPrice, condition: Math.random() > 0.4 ? "中古(非常に良い)" : "新品", image: cat.img, highestOffer: Math.floor(randomPrice * (0.8 + Math.random() * 0.2)), sold: false, description: "Authentic registry item.", accessories: "全てあり" });
                 }
             }
             let allItems = [...(individualListings.filter(l=>l.categoryId === catId)), ...categorySamples[catId]];
@@ -661,8 +680,7 @@
             allItems.forEach(item => {
                 const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black text-black'; card.onclick = () => showItemDetail(item);
                 const isFav = favoriteItemIds.has(item.id); const condColor = item.condition.includes("新品") ? "bg-black" : "bg-red-600";
-                // 円マークを数字と同じ濃さに (opacity削除)
-                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon ${isFav ? 'active' : ''}">${isFav ? '❤' : '♡'}</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow"><span class="text-xl mr-1 italic">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
+                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon ${isFav ? 'active' : ''}">${isFav ? '❤' : '♡'}</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow"><span class="text-xl mr-1 italic">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
                 listingsGrid.appendChild(card);
             });
         };
@@ -676,7 +694,7 @@
             allFavoritedItems.forEach(item => {
                 const card = document.createElement('div'); card.className = 'glass rounded-[40px] p-4 border border-black/[0.04] cursor-pointer hover:border-black transition-all flex flex-col h-full shadow-lg italic group bg-white/30 hover:bg-white/70 overflow-hidden relative text-black text-black'; card.onclick = () => showItemDetail(item);
                 const condColor = item.condition.includes("新品") ? "bg-black" : "bg-red-600";
-                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon active">❤</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow text-black"><span class="text-xl mr-1 italic text-black">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
+                card.innerHTML = `<div class="aspect-square rounded-[28px] overflow-hidden mb-4 bg-neutral-50 relative shadow-inner border border-black/[0.03] p-1 text-black ${item.sold ? 'opacity-50' : ''}"><span onclick="toggleFavoriteItem(event, '${item.id}')" class="heart-icon active">❤</span>${item.sold ? '<div class="sold-ribbon"><span>SOLD</span></div>' : ''}<img src="${item.image}" class="w-full h-full object-cover rounded-[24px] transition-transform duration-700 group-hover:scale-105"><div class="absolute top-4 left-4 ${condColor} text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">${item.condition}</div></div><div class="font-mono text-black flex-grow flex flex-col justify-between px-1 ${item.sold ? 'opacity-30' : ''}"><h4 class="font-black text-[11px] uppercase leading-tight truncate mb-2 group-hover:text-emerald-600 transition-colors text-black text-black text-black text-black text-black">${item.name}</h4><div class="flex justify-between items-baseline pt-2 text-black"><div class="text-xl font-black text-black italic tracking-tighter leading-none price-glow text-black"><span class="text-xl mr-1 italic text-black">¥</span>${item.price}</div><div class="text-right text-black"><span class="text-[7px] text-gray-400 uppercase font-bold block mb-0.5 text-neutral-400">offer</span><span class="text-[10px] font-black text-emerald-600 leading-none">¥${item.highestOffer.toLocaleString()}</span></div></div></div>`;
                 favGrid.appendChild(card);
             });
         };
@@ -687,19 +705,20 @@
             if(filtered.length === 0) { globalHistoryBody.innerHTML = `<tr><td colspan="6" class="py-20 text-center opacity-40 uppercase tracking-widest italic text-black">No entries found</td></tr>`; return; }
             filtered.forEach(tx => {
                 const row = document.createElement('tr'); row.className = 'hover:bg-black/[0.01] transition-all text-black text-black';
-                row.innerHTML = `<td class="pl-8 py-4 text-black"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5 text-black"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40 text-black text-black text-black">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black text-black text-black">${tx.itemName}</td><td class="px-4 py-6 text-[10px] uppercase font-bold opacity-60 text-black text-black text-black">${tx.categoryName}</td><td class="px-4 py-6 text-black text-black"><span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter bg-emerald-100 text-emerald-800 text-black">SALE</span></td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none text-black">¥${tx.price}</td>`;
+                row.innerHTML = `<td class="pl-8 py-4 text-black"><div class="w-12 h-12 rounded-full overflow-hidden border border-black/5 bg-white shadow-sm p-0.5 text-black"><img src="${tx.image}" class="w-full h-full object-cover rounded-full"></div></td><td class="px-4 py-6 opacity-40 text-black text-black text-black">${tx.date}</td><td class="px-4 py-6 font-black uppercase italic text-black text-black text-black">${tx.itemName}</td><td class="px-4 py-6 text-[10px] uppercase font-bold opacity-60 text-black text-black text-black text-black">${tx.categoryName}</td><td class="px-4 py-6 text-black text-black"><span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter bg-emerald-100 text-emerald-800 text-black">SALE</span></td><td class="px-4 py-6 text-right pr-8 font-black text-black leading-none text-black">¥${tx.price}</td>`;
                 globalHistoryBody.appendChild(row);
             });
         };
 
-        window.showItemDetail = function(item) {
+        window.showItemDetail = function(item, push = true) {
             currentFilteringItem = item;
+            if (push) history.pushState({ view: 'item', item: item }, "");
             document.getElementById('item-detail-image').src = item.image;
             document.getElementById('item-detail-title').innerText = item.name;
             document.querySelectorAll('#item-detail-price').forEach(el => el.innerText = item.price);
             document.getElementById('item-detail-highest-offer').innerText = item.highestOffer > 0 ? `¥${item.highestOffer.toLocaleString()}` : "--";
             let accessoryInfo = item.accessories ? "\n\n付属品: " + item.accessories : "";
-            document.getElementById('item-detail-description').innerText = (item.description || "詳細なし") + accessoryInfo;
+            document.getElementById('item-detail-description').innerText = (item.description || "Authentication signature required.") + accessoryInfo;
             const imgContainer = document.getElementById('item-detail-image-container');
             const oldSold = imgContainer.querySelector('.sold-ribbon'); if (oldSold) oldSold.remove();
             if (item.sold) {
@@ -724,8 +743,8 @@
             currentFilteringItem.sold = true;
             const now = new Date(); const dateStr = `${now.getFullYear()}.${(now.getMonth()+1).toString().padStart(2, '0')}.${now.getDate().toString().padStart(2, '0')}`;
             transactionHistory.unshift({ id: `TX-${Date.now().toString().slice(-4)}`, date: dateStr, itemName: currentFilteringItem.name, categoryName: categories.find(c => c.id === currentFilteringItem.categoryId).name, categoryId: currentFilteringItem.categoryId, type: 'SALE', price: currentFilteringItem.price, image: currentFilteringItem.image });
-            showToast("Order Accepted", "ご注文ありがとうございます。事務局より連絡いたします。");
-            showItemDetail(currentFilteringItem);
+            showToast("Order Accepted", "ご注文ありがとうございました。事務局より連絡いたします。");
+            showItemDetail(currentFilteringItem, false); // リロードだけ
         };
 
         window.openModal = function() { if(modal) modal.style.display = 'flex'; };
@@ -767,6 +786,8 @@
             reader.readAsDataURL(file);
         };
 
+        window.editorRotate = function() { editorState.rotate = (editorState.rotate + 90) % 360; updateVisuals(); };
+        window.editorFlip = function() { editorState.flip = !editorState.flip; updateVisuals(); };
         window.updateVisuals = function() {
             const finalScale = editorState.baseScale * editorState.zoom; const flipScale = editorState.flip ? -1 : 1;
             editorImgEl.style.transform = `translate(calc(-50% + ${editorState.currentX}px), calc(-50% + ${editorState.currentY}px)) scale(${finalScale}) scaleX(${flipScale}) rotate(${editorState.rotate}deg)`;
@@ -791,18 +812,12 @@
 
         window.handleListingSubmit = async function(event) {
             event.preventDefault(); 
-            const catId = parseInt(categorySelect.value); 
-            const price = parseInt(document.getElementById('form-price').value);
+            const catId = parseInt(categorySelect.value); const price = parseInt(document.getElementById('form-price').value);
             const condition = document.getElementById('form-condition-select').value;
             const accessories = document.getElementById('form-accessories-select').value;
             const description = document.getElementById('form-description').value;
             const fImg = editorImgEl.src ? await captureCroppedImage() : categories.find(c=>c.id===catId).img;
-            individualListings.unshift({ 
-                id: `user-${Date.now()}`, categoryId: catId, name: document.getElementById('form-name').value, 
-                price: price.toLocaleString(), priceVal: price, condition: condition, 
-                image: fImg, isUserListed: true, highestOffer: 0, sold: false,
-                description: description, accessories: accessories
-            });
+            individualListings.unshift({ id: `user-${Date.now()}`, categoryId: catId, name: document.getElementById('form-name').value, price: price.toLocaleString(), priceVal: price, condition: condition, image: fImg, isUserListed: true, highestOffer: 0, sold: false, description: description, accessories: accessories });
             closeModal(); showToast("Success", "Registry entry confirmed."); if (activeCategoryId === catId) toggleDetailTab('collection');
         };
 
